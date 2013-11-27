@@ -1,0 +1,15 @@
+{
+  "version": "1",
+  "name": "My Extension",
+  "manifest_version": 2,
+
+  "description": "Gets information from Google.",
+  "content_scripts": [
+    {
+      "matches": ["*://*/*"],
+      "css": ["style.css"],
+      "js": ["main.js"],
+      "run_at": "document_end"
+    }
+  ]
+}
