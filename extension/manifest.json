@@ -1,15 +1,30 @@
 {
-  "version": "1",
-  "name": "My Extension",
-  "manifest_version": 2,
-
-  "description": "Gets information from Google.",
-  "content_scripts": [
-    {
-      "matches": ["*://*/*"],
-      "css": ["style.css"],
-      "js": ["main.js"],
-      "run_at": "document_end"
-    }
-  ]
+    "version": "1",
+    "name": "My Extension",
+    "manifest_version": 2,
+    "description": "",
+    "background": {
+        "persistent": false,
+        "page": "background.html"
+	},
+    "browser_action": {
+        "default_icon": {
+            "19": "images/faviconTOMODO19.png",
+            "38": "images/faviconTOMODO38.png"
+        },
+        "default_title": "Google Mail",
+        "default_popup": "popup.html"
+    },
+    "permissions": [
+        "alarms",
+        "tabs",
+        "webNavigation",
+        "*://*/*"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["*://*/*"],
+            "js": ["main.js"]
+        }
+    ]
 }
