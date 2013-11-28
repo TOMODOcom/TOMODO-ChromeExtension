@@ -1,12 +1,28 @@
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-    var host = request.host;
-    mod_request = new XMLHttpRequest;
-    mod_request.open('post', 'http://betterinternethome.com:8000/v1/getModData', false);
-    var request_data = {target_domain:host}
-    request_data = JSON.stringify(request_data);
-    mod_request.send(request_data);
-    var mod_data = mod_request.responseText;
-    mod_data = JSON.parse(mod_data);
-    mod_data = JSON.parse(mod_data);
-    chrome.browserAction.setBadgeText({text: mod_data.count.toLocaleString()});
+    if(request.badgeText){
+        localStorage["hostName_"+sender.tab.id] = request.host;
+        localStorage["numberOfMods_"+sender.tab.id] = request.badgeText;
+        chrome.browserAction.setBadgeText({text: request.badgeText});
+    }
+    else if (request.tabId){
+        var target_domain = localStorage["hostName_" + request.tabId];
+        var url = "http://betterinternethome.com:8000/dashboard/createNewMod/?target_domain=" + target_domain;
+        chrome.tabs.create({url: url});
+    }
 });
+
+chrome.tabs.onCreated.addListener(function(options){
+    setBadge(options.id);
+});
+
+chrome.tabs.onUpdated.addListener(function(id){
+    setBadge(id);
+});
+
+chrome.tabs.onActivated.addListener(function(options){
+    setBadge(options.tabId);
+});
+
+function setBadge(tabId){
+    chrome.browserAction.setBadgeText({text: localStorage["numberOfMods_"+tabId] || ""});
+}
