@@ -15,7 +15,6 @@ function setNumberOfMod(){
         var badgeText = mod_data.count > 0 ? mod_data.count.toLocaleString() : "";
         localStorage.badgeText = badgeText;
     }
-
     chrome.runtime.sendMessage({badgeText : localStorage.badgeText, host: location.hostname });
 }
 setNumberOfMod();

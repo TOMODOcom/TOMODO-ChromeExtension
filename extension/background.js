@@ -15,10 +15,6 @@ chrome.tabs.onCreated.addListener(function(options){
     setBadge(options.id);
 });
 
-chrome.tabs.onUpdated.addListener(function(id){
-    setBadge(id);
-});
-
 chrome.tabs.onActivated.addListener(function(options){
     setBadge(options.tabId);
 });
