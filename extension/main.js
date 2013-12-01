@@ -13,8 +13,8 @@ function setNumberOfMod(){
     mods_data = JSON.parse(mods_data);
     var count = mods_data.length;
     var badgeText = count > 0 ? count.toLocaleString() : "";
-    localStorage.badgeText = badgeText;
-    chrome.runtime.sendMessage({badgeText : localStorage.badgeText, host: location.hostname, mods: mods_data });
+
+    chrome.runtime.sendMessage({init: true, badgeText : badgeText, host: location.hostname, mods: mods_data});
 }
 
 setNumberOfMod();

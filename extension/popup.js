@@ -14,20 +14,11 @@ $(document).ready(function(){
             updateMods(response);
         });
         $('#tomodo .modit').click(function(){
-            chrome.runtime.sendMessage({tabId: tab.id}, function(response) {});
+            chrome.runtime.sendMessage({createMod: {forTabId: tab.id}}, function(response) {});
             mixpanel.track("say ya!");
         });
     });
 });
-
-//chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
-//    console.log('bbbajdksal;faksdjfaaskdjfdlka');
-//    if(request.mods){
-//        console.log('pop on got meaagesssss');
-//        console.log(request.mods);
-//        _mods = request.mods;
-//    }
-//});
 
 var updateMods;
 function mods($scope){
