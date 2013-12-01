@@ -1,8 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html ng-app>
 <head>
     <title></title>
-    <script src="jquery-1.10.1.min.js"></script>
+    <!-- start Mixpanel -->
+        <script type="text/javascript">
+
+        </script>
+    <!-- end Mixpanel -->
+    <script src="libs/jquery-1.10.1.min.js"></script>
+    <script src="libs/angular.min.js"></script>
     <script src="popup.js"></script>
 </head>
 <body>
@@ -10,6 +16,13 @@
         <div class="modit">
             Mod it
         </div>
+        <img src="" alt=""/>
+        <div ng-controller="mods">
+            <div ng-repeat="mod in _mods">
+                mod.id
+            </div>
+        </div>
+
     </div>
 </body>
 </html>
