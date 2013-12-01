@@ -1,6 +1,6 @@
 {
     "version": "1",
-    "name": "My Extension",
+    "name": "tomoder",
     "manifest_version": 2,
     "description": "",
     "background": {
@@ -12,7 +12,7 @@
             "19": "images/faviconTOMODO19.png",
             "38": "images/faviconTOMODO38.png"
         },
-        "default_title": "Google Mail",
+        "default_title": "click for list of mods",
         "default_popup": "popup.html"
     },
     "permissions": [

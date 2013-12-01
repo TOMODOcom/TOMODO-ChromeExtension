@@ -8,7 +8,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     }
     else if (request.createMod){
         var target_domain = localStorage["hostName_" + request.createMod.forTabId];
-        var url = "http://betterinternethome.com:8000/dashboard/createNewMod/?target_domain=" + target_domain;
+        var url = "http://192.168.12.60:8000/dashboard/createNewMod/?target_domain=" + target_domain;
         chrome.tabs.create({url: url});
     }
     else if(request.getMods){
