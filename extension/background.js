@@ -1,18 +1,29 @@
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 
+    var day = 1000*60*60*24;
+    var minute = 1000*60;
     if(request.init){
-        localStorage["hostName_"+sender.tab.id] = request.host;
-        localStorage["numberOfMods_"+sender.tab.id] = request.badgeText;
-        localStorage["tomodoMods_"+sender.tab.id] = JSON.stringify(request.mods);
+        sessionStorage["hostName_"+sender.tab.id] = request.host;
+        sessionStorage["numberOfMods_"+sender.tab.id] = request.badgeText;
+        sessionStorage["tomodoMods_"+sender.tab.id] = JSON.stringify(request.mods);
         chrome.browserAction.setBadgeText({text: request.badgeText});
+
+        if(!localStorage['tomodoLastSuggest'] || (new Date - new Date(localStorage['tomodoLastSuggest'])) > 1 * minute){
+            localStorage['tomodoLastSuggest'] = new Date;
+            sendResponse(true);
+        }
+        else{
+            sendResponse(false);
+        }
+
     }
     else if (request.createMod){
-        var target_domain = localStorage["hostName_" + request.createMod.forTabId];
-        var url = "http://192.168.12.60:8000/dashboard/createNewMod/?target_domain=" + target_domain;
+        var target_domain = sessionStorage["hostName_" + request.createMod.forTabId];
+        var url = "http://betterinternethome.com:8000/dashboard/createNewMod/?target_domain=" + target_domain;
         chrome.tabs.create({url: url});
     }
     else if(request.getMods){
-        sendResponse(JSON.parse( localStorage["tomodoMods_" + request.getMods.forTabId]));
+        sendResponse(JSON.parse( sessionStorage["tomodoMods_" + request.getMods.forTabId]));
     }
 
 });
@@ -26,7 +37,7 @@ chrome.tabs.onActivated.addListener(function(options){
 });
 
 function setBadge(tabId){
-    chrome.browserAction.setBadgeText({text: localStorage["numberOfMods_"+tabId] || ""});
+    chrome.browserAction.setBadgeText({text: sessionStorage["numberOfMods_"+tabId] || ""});
 }
 
 
