@@ -10,19 +10,36 @@
     <script src="libs/jquery-1.10.1.min.js"></script>
     <script src="libs/angular.min.js"></script>
     <script src="popup.js"></script>
+    <link rel="stylesheet" href="popup.css"/>
 </head>
 <body>
-    <div id="tomodo">
-        <div class="modit">
+    <div id="tomodo" ng-controller="tomodoControl">
+        <button class="modit">
             Mod it
-        </div>
-        <img src="" alt=""/>
-        <div ng-controller="mods">
-            <div ng-repeat="mod in _mods">
-                {{ mod.id }}
+        </button>
+        <div ng-show=" state == 'mods' ">
+            <div ng-repeat="mod in _mods" class="mod" ng-click="displayMod(mod)">
+                <a href="{{baseUrl}}{{mod.modPageUrl}}">
+                    <img src="{{mod.modImageXSmall}}" alt=""/>
+                </a>
             </div>
         </div>
+        <div ng-show=" state == 'mod' ">
+            <button ng-click="back()">
+                back
+            </button>
+            <br>
+            <a href="{{baseUrl}}{{modPageUrl}}" ng-click="openModPage()">
+                visit mod page
+            </a>
+            <br>
+            <a href="{{fullModUrl}}" ng-click="openModSite()">
+                visit mod
+            </a>
+            <br>
+            <img src="{{mod.modImageXSmall}}" alt=""/>
 
+        </div>
     </div>
 </body>
 </html>

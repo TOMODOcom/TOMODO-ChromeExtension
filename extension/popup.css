@@ -1,0 +1,13 @@
+#tomodo{
+    width: 270px;
+    height: 512px;
+    overflow: hidden;
+}
+
+.mod{
+    float: left;
+}
+
+.mod img {
+    width: 135px;
+}
