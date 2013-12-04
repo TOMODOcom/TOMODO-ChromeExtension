@@ -20,6 +20,8 @@
         <div ng-show=" state == 'mods' ">
             <div ng-repeat="mod in _mods" class="mod" ng-click="displayMod(mod)">
                 <a href="{{baseUrl}}{{mod.modPageUrl}}">
+                    {{mod.name}}
+                    <br>
                     <img src="{{mod.modImageXSmall}}" alt=""/>
                 </a>
             </div>

@@ -16,7 +16,9 @@ function pageLoad(){
     var badgeText = count > 0 ? count.toLocaleString() : "";
 
     chrome.runtime.sendMessage({init: true, badgeText : badgeText, host: location.hostname, mods: mods_data}, function(response){
-//        alert(response);
+        if(response){
+            alert('popup');
+        }
     });
 }
 

@@ -2,14 +2,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 
     var day = 1000*60*60*24;
     var minute = 1000*60;
-
     var INTERVAL_TO_SUGGEST = 0*day + 2*minute;
-
 
     if(request.init){
         // a init request has been sent from content script on page load
+        var host = request.host;
         var tabId = sender.tab.id;
-        sessionStorage["hostName_" + tabId] = request.host;
+
+        sessionStorage["hostName_" + tabId] = host;
         sessionStorage["numberOfMods_" + tabId] = request.badgeText;
         sessionStorage["tomodoMods_" + tabId] = JSON.stringify(request.mods);
 
@@ -48,27 +48,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     }
 });
 
-chrome.tabs.onUpdated.addListener(function(options){
-    console.log('onUpdated');
-    console.log(options);
-});
-
 chrome.tabs.onCreated.addListener(function(options){
-    chrome.browserAction.setBadgeText({text: ""});
     setBadge(options.id);
 });
 
-chrome.tabs.onActivated.addListener(function(options){
-    setBadge(options.tabId);
-});
-
-
 function setBadge(tabId){
     if(sessionStorage["numberOfMods_"+tabId] || sessionStorage["numberOfMods_"+tabId] == ""){
-        chrome.browserAction.setBadgeText({text: sessionStorage["numberOfMods_"+tabId]});
+        chrome.browserAction.setBadgeText({text: sessionStorage["numberOfMods_"+tabId], tabId: tabId});
     }
     else{
-        console.log('trying to send init');
         chrome.extension.sendMessage({contentInit:true});
     }
 }

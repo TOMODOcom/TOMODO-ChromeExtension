@@ -4,8 +4,6 @@ $(document).ready(function(){
     chrome.tabs.getAllInWindow(function(tabs){
         var tab = tabs.filter(function(tab){return tab.active})[0];
         chrome.runtime.sendMessage({getMods: {forTabId: tab.id}}, function(response){
-            console.log('message returned from background');
-            console.log(response);
             updateMods(response);
         });
         $('#tomodo .modit').click(function(){
