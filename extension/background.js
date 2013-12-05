@@ -5,14 +5,23 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     var INTERVAL_TO_SUGGEST = 0*day + 2*minute;
 
     if(request.init){
-
         // a init request has been sent from content script on page load
         var host = request.host;
         var tabId = sender.tab.id;
 
-        setPopupContent(tabId, host)
-        setBadge(tabId);
+        sessionStorage["hostName_" + tabId] = host;
+        sessionStorage["numberOfMods_" + tabId] = request.badgeText;
+        sessionStorage["tomodoMods_" + tabId] = JSON.stringify(request.mods);
 
+        // on chrome start-up there maybe a couple of pages loading at once, genrally that loading pages may load in
+        // background
+        chrome.tabs.query({ currentWindow: true, active: true }, function (tabs) {
+            // so we set the badge with data about the current tab
+            if(tabs[0].id == tabId){
+                setBadge(tabId);
+            }
+        });
+        //
 
         // if we haven't suggested at all or haven't suggested in the last INTERVAL_TO_SUGGEST
         if(!localStorage['tomodoLastSuggest'] || (new Date - new Date(localStorage['tomodoLastSuggest'])) > INTERVAL_TO_SUGGEST){
@@ -32,9 +41,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     }
     else if(request.getMods){
         // popup page has asked for the mods data.
-        var tabId = request.getMods.forTabId;
-        var host = sessionStorage["hostName_" + tabId];
-        sendResponse(JSON.parse( sessionStorage["tomodoMods_" + host]));
+        sendResponse(JSON.parse( sessionStorage["tomodoMods_" + request.getMods.forTabId]));
     }
     else if (request.open && request.open.url){
         chrome.tabs.create({url: request.open.url});
@@ -43,53 +50,15 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 
 chrome.tabs.onCreated.addListener(function(options){
     setBadge(options.id);
-    setPopupContent(options.id);
-});
-
-chrome.tabs.onUpdated.addListener(function (tabId, changeInfo, tab){
-    setBadge(options.id);
-    setPopupContent(options.id);
-});
-
-chrome.tabs.onActiveChanged.addListener(function(tabId, selectInfo) {
-    setBadge(tabId);
-    setPopupContent(tabId);
 });
 
 function setBadge(tabId){
-    var host = sessionStorage["hostName_"+tabId];
-    if(!host){
-
+    if(sessionStorage["numberOfMods_"+tabId] || sessionStorage["numberOfMods_"+tabId] == ""){
+        chrome.browserAction.setBadgeText({text: sessionStorage["numberOfMods_"+tabId], tabId: tabId});
     }
     else{
-        chrome.browserAction.setBadgeText({text: sessionStorage["numberOfMods_" + host], tabId: tabId});
+        chrome.extension.sendMessage({contentInit:true});
     }
-}
-
-function setPopupContent(tabId, host){
-
-    host = host.split('.');
-    host = host.slice(-2);
-    host = host.join('.');
-
-    if(!sessionStorage["numberOfMods_" + host] || !sessionStorage["tomodoMods_" + host]){
-        var mods_request = new XMLHttpRequest;
-        mods_request.open('get', 'http://betterinternethome.com:8080/v1/getPublishedModsByDomain?target_domain=' + host, false);
-        mods_request.send();
-        var mods_data = mods_request.responseText;
-        mods_data = JSON.parse(mods_data);
-        var count = mods_data.length;
-        var badgeText = count > 0 ? count.toLocaleString() : "";
-    }
-
-
-    sessionStorage["hostName_" + tabId] = host;
-
-    if(!sessionStorage["numberOfMods_" + host])
-        sessionStorage["numberOfMods_" + host] = badgeText;
-
-    if(!sessionStorage["tomodoMods_" + host])
-        sessionStorage["tomodoMods_" + host] = JSON.stringify(mods_data);
 }
 
 
