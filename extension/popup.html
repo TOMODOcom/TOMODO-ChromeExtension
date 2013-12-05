@@ -18,7 +18,7 @@
             Mod it
         </button>
         <div ng-show=" state == 'mods' ">
-            <div ng-repeat="mod in _mods" class="mod" ng-click="displayMod(mod)">
+            <div ng-repeat="mod in mods" class="mod" ng-click="displayMod(mod)">
                 <a href="{{baseUrl}}{{mod.modPageUrl}}">
                     {{mod.name}}
                     <br>

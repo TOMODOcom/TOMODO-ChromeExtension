@@ -4,28 +4,10 @@ document.head.appendChild(meta);
 
 function pageLoad(){
     var host = location.hostname;
-    host = host.split('.');
-    host = host.slice(-2);
-    host = host.join('.');
-    var mods_request = new XMLHttpRequest;
-    mods_request.open('get', 'http://betterinternethome.com:8080/v1/getPublishedModsByDomain?target_domain=' + host, false);
-    mods_request.send();
-    var mods_data = mods_request.responseText;
-    mods_data = JSON.parse(mods_data);
-    var count = mods_data.length;
-    var badgeText = count > 0 ? count.toLocaleString() : "";
-
-    chrome.runtime.sendMessage({init: true, badgeText : badgeText, host: location.hostname, mods: mods_data}, function(response){
+    chrome.runtime.sendMessage({init: true, host: host}, function(response){
         if(response){
             alert('popup');
         }
     });
 }
-
 pageLoad();
-
-chrome.extension.onMessage.addListener(function(request,sender,sendResponse){
-    if(request.contentInit){
-        pageLoad();
-    }
-});
