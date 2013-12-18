@@ -14,33 +14,32 @@
 </head>
 <body>
     <div id="tomodo" ng-controller="tomodoControl">
-        <button class="modit">
-            Mod it
-        </button>
-        <div ng-show=" state == 'mods' ">
-            <div ng-repeat="mod in mods" class="mod" ng-click="displayMod(mod)">
-                <a href="{{baseUrl}}{{mod.modPageUrl}}">
-                    {{mod.name}}
-                    <br>
-                    <img src="{{mod.modImageXSmall}}" alt=""/>
-                </a>
+        <div id="topbar">
+            <div id="number-of-mods">
+                {{mods.length}} MODS
+            </div>
+            <div id="icon">
+                <img src="./images/tomodo-logo-white-22.png" alt=""/>
             </div>
         </div>
-        <div ng-show=" state == 'mod' ">
-            <button ng-click="back()">
-                back
-            </button>
-            <br>
-            <a href="{{baseUrl}}{{modPageUrl}}" ng-click="openModPage()">
-                visit mod page
-            </a>
-            <br>
-            <a href="{{fullModUrl}}" ng-click="openModSite()">
-                visit mod
-            </a>
-            <br>
-            <img src="{{mod.modImageXSmall}}" alt=""/>
+        <div id="main">
+            <div id="mods">
+                <div class="modGalleryElement modsElement" ng-repeat="mod in mods"  ng-click="openModSite(mod)">
+                        <div class="imgContainer">
+                            <div class="imgCover"></div>
+                            <img src="{{mod.modImageXSmall}}" height="70" width="90">
+                        </div>
+                        <div class="textWrapper">
+                            {{mod.description}}
+                        </div>
+                </div>
+            </div>
+            <div class="seperator">
 
+            </div>
+            <div class="modit" ng-click="modIt()">
+                MOD THIS SITE
+            </div>
         </div>
     </div>
 </body>

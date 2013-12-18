@@ -3,10 +3,9 @@ meta.content = 'tomodo_extension_installed';
 document.head.appendChild(meta);
 
 function pageLoad(){
-    var host = location.hostname;
-    chrome.runtime.sendMessage({init: true, host: host}, function(response){
+    var url = location.hostname;
+    chrome.runtime.sendMessage({init: true, url: url}, function(response){
         if(response){
-            alert('popup');
         }
     });
 }

@@ -2,18 +2,20 @@
 
 mixpanel.init("aecabcf1633d428bab0dffd6134ef09a");
 
-console.log("popup button clicked");
+//______________________________________________________________________________________________________________________
+
 mixpanel.track('browserActionButton_click');
 
+var host;
+var updateMods;
+
 $(document).ready(function(){
-    chrome.tabs.getAllInWindow(function(tabs){
-        var tab = tabs.filter(function(tab){return tab.active})[0];
+    chrome.tabs.query({active: true, currentWindow: true} ,function(tabs){
+        var tab = tabs[0];
         chrome.runtime.sendMessage({getMods: {forTabId: tab.id}}, function(response){
-            updateMods(response);
-        });
-        $('#tomodo .modit').click(function(){
-            chrome.runtime.sendMessage({createMod: {forTabId: tab.id}}, function(response) {});
-            mixpanel.track("say ya!");
+            if(response.mods)
+                updateMods(response.mods);
+            host = response.host;
         });
     });
 });
@@ -21,32 +23,53 @@ $(document).ready(function(){
 function openUrl(url){
     chrome.runtime.sendMessage({open: {url: url}}, function(response){});
 }
+function navigateTo(url){
+    chrome.runtime.sendMessage({goto: {url: url}}, function(response){});
+}
 
-var updateMods;
 function tomodoControl($scope){
     $scope.state = "mods";
     $scope.mods = [];
     $scope.baseUrl = "http://betterinternethome.com:8000";
     updateMods = function(mods){
+        console.log(mods)
         $scope.$apply(function(){
             $scope.mods = mods.filter(function(mod){
                 return mod.modImageXSmall.indexOf("defModImg") == -1;
-            });
+            })
+//                .slice(0,2) //debug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+            ;
         });
     };
+
     $scope.displayMod = function(mod){
-        $scope.mod = mod;
-        $scope.state = 'mod';
-    }
-    $scope.back = function(){
-        $scope.state = 'mods';
+//        $scope.mod = mod;
+//        $scope.state = 'mod';
     }
 
-    $scope.openModPage = function(){
-        openUrl($scope.baseUrl  + $scope.mod.modPageUrl);
+    $scope.back = function(){
+//        $scope.state = 'mods';
     }
-    $scope.openModSite = function(){
-        openUrl($scope.mod.fullModUrl);
+
+    $scope.openModPage = function(mod){
+//        openUrl($scope.baseUrl  + $scope.mod.modPageUrl);
+    }
+
+    $scope.openModSite = function(mod){
+        if(mod){
+            mixpanel.track('mod_navigate', {mod: mod.fullModUrl, orignal_site: mod.fullTargetUrl, original_domain: host})
+            navigateTo(mod.fullModUrl);
+        }
+//        openUrl($scope.mod.fullModUrl);
+    }
+
+    $scope.modIt = function(){
+//        chrome.runtime.sendMessage({createMod: {forTabId: tab.id}}, function(response) {});
+
+        mixpanel.track('mod_create', {domain: host});
+        var url = "http://betterinternethome.com:8000/dashboard/createNewMod/?target_domain=" + host;
+        openUrl(url);
+
     }
 }
 

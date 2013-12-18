@@ -8,16 +8,18 @@
     b._i.push([a,e,d])};b.__SV=1.2}})(document,window.mixpanel||[]);
 mixpanel.init("aecabcf1633d428bab0dffd6134ef09a");
 
+//______________________________________________________________________________________________________________________
+
 chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
 
     var day = 1000*60*60*24;
     var minute = 1000*60;
     var INTERVAL_TO_SUGGEST = 0*day + 2*minute;
 
-    if(request.init && request.host){
+    if(request.init){
 
         // a init request has been sent from content script on page load
-        var host = request.host;
+        var host = request.url;
         var tabId = sender.tab.id;
 
         initPopupContent(tabId, host)
@@ -33,21 +35,22 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             sendResponse(false);
         }
     }
-    else if (request.createMod){
-        // a new mod creation has been sent from the popup
-        var target_domain = sessionStorage["hostName_" + request.createMod.forTabId];
-        var url = "http://betterinternethome.com:8000/dashboard/createNewMod/?target_domain=" + target_domain;
-        chrome.tabs.create({url: url});
-    }
     else if(request.getMods){
         // popup page has asked for the mods data.
         var tabId = request.getMods.forTabId;
         var host = sessionStorage["hostName_" + tabId];
-        sendResponse(JSON.parse( sessionStorage["tomodoMods_" + host]));
+        sendResponse({
+            host: host,
+            mods: JSON.parse( sessionStorage["tomodoMods_" + host])
+        });
     }
     else if (request.open && request.open.url){
         chrome.tabs.create({url: request.open.url});
     }
+    else if (request.goto && request.goto.url){
+        chrome.tabs.update(tabId, {url: request.goto.url});
+    }
+
 });
 
 function setBadge(tabId){
@@ -68,7 +71,7 @@ function initPopupContent(tabId, host){
 
     if(!sessionStorage["numberOfMods_" + host] || !sessionStorage["tomodoMods_" + host]){
         var mods_request = new XMLHttpRequest;
-        mods_request.open('get', 'http://betterinternethome.com:8080/v1/getPublishedModsByDomain?target_domain=' + host, false);
+        mods_request.open('get', 'http://betterinternethome.com:8080/v1/getPublishedModsByDomain?targetDomain=' + host, false);
         mods_request.send();
         var mods_data = mods_request.responseText;
         mods_data = JSON.parse(mods_data);
