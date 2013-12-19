@@ -1,6 +1,13 @@
+a {
+    text-decoration: none;
+    color: rgba(255, 255, 255, 0);
+}
+
 body{
+    font-family:'Source Sans Pro', sans-serif;
     margin: 0px !important;
     color: white;
+    font-family: 'Source Sans Pro';
 }
 #tomodo{
     width: 275px;
@@ -9,7 +16,7 @@ body{
 }
 
 #topbar{
-    background: #f55050;
+    background: #FC5353;
     height: 22px;
     padding: 10px;
 }
@@ -31,11 +38,26 @@ body{
     margin: 15px;
 }
 
-
 #mods{
-    height: 275px;
+    max-height: 275px;
     overflow-y: scroll;
     overflow-x: hidden;
+}
+
+#no-mods{
+    color: black;
+    text-align: center;
+}
+
+#no-mods .title{
+    margin-top: 30px;
+    font-weight: bold;
+    margin-bottom: 8px;
+    font-size: 18px;
+}
+
+#no-mods .text{
+    margin-bottom: 20px;
 }
 
 .seperator{
@@ -49,11 +71,12 @@ body{
 .modit{
     text-align: center;
     width: 245px;
-    height: 35px;
-    background: #f55050;
+    height: 31px;
+    background: #FC5353;
     border: none;
-    padding-top: 15px;
+    padding-top: 11px;
     font-weight: bold;
+    cursor: pointer;
 }
 
 .modsElement{
@@ -78,15 +101,25 @@ body{
 }
 
 .textWrapper{
-    /*color: #888888;*/
-    /*margin-top: 10px;*/
-    /*margin-left: 10px;*/
-    /*width: 120px;*/
-    /*height: 60px;*/
     color: #888888;
     margin-left: 10px;
-    width: 120px;
+    width: 110px;
     line-height: 22px;
+    text-overflow: ellipsis;
+}
+
+.textWrapper .name {
+    font-weight: bold;
+    height: 20px;
+    overflow: hidden;
+    margin-top: 10px;
+    text-overflow: ellipsis;
+}
+
+.textWrapper .description {
+    height: 20px;
+    text-overflow: ellipsis;
+    overflow: hidden;
 }
 
 .imgCover{
@@ -95,7 +128,7 @@ body{
     position: absolute;
     width: 90px;
     height: 70px;
-    background-color: #ff2222;
+    background-color: #FC5353;
     opacity: .8;
     z-index: 10;
     background-image: url('./images/cover_image.png');
@@ -112,10 +145,9 @@ body{
     color: white;
 }
 
-
 ::-webkit-scrollbar {
     background: white;
-    width: 15px;
+    width: 12px;
 }
 ::-webkit-scrollbar-button {
     background: white;
@@ -124,16 +156,17 @@ body{
     background: white;
 }
 ::-webkit-scrollbar-track-piece {
-    background: #dcdcdc;
+    background: #E9E9E9;
     border-radius: 10px;
     margin-top: -15px;
     margin-bottom: -15px;
 }
 ::-webkit-scrollbar-thumb {
-    background: gray;
+    background: #C9C9C9;
     border-radius: 10px;
 }
 ::-webkit-scrollbar-corner {
 }
+
 ::-webkit-resizer {
 }

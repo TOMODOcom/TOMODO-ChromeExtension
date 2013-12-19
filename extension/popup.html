@@ -7,40 +7,59 @@
 
         </script>
     <!-- end Mixpanel -->
+
+    <link href="fonts.css" rel="stylesheet" type="text/css">
     <script src="libs/jquery-1.10.1.min.js"></script>
     <script src="libs/angular.min.js"></script>
     <script src="popup.js"></script>
     <link rel="stylesheet" href="popup.css"/>
 </head>
-<body>
-    <div id="tomodo" ng-controller="tomodoControl">
+<body ng-controller="tomodoControl">
+    <div id="tomodo">
         <div id="topbar">
-            <div id="number-of-mods">
+            <div id="number-of-mods" ng-show="mods.length > 0">
                 {{mods.length}} MODS
             </div>
-            <div id="icon">
-                <img src="./images/tomodo-logo-white-22.png" alt=""/>
-            </div>
+            <a href="http://tomodo.com" target="_blank">
+                <div id="icon">
+                    <img src="./images/tomodo-logo-white-22.png" alt=""/>
+                </div>
+            </a>
         </div>
         <div id="main">
-            <div id="mods">
+            <div id="no-mods" ng-show="mods.length == 0">
+                <div class="title">
+                    - NO MODS FOR THIS SITE -
+                </div>
+                <div class="text">
+                    Be the first one to<br> modify this website
+                </div>
+            </div>
+            <div id="mods" ng-show="mods.length > 0">
                 <div class="modGalleryElement modsElement" ng-repeat="mod in mods"  ng-click="openModSite(mod)">
                         <div class="imgContainer">
                             <div class="imgCover"></div>
                             <img src="{{mod.modImageXSmall}}" height="70" width="90">
                         </div>
                         <div class="textWrapper">
-                            {{mod.description}}
+                            <div class="name">
+                                {{mod.name}}
+                            </div>
+                            <div class="description">
+                                {{mod.description}}
+                            </div>
                         </div>
                 </div>
             </div>
-            <div class="seperator">
 
+            <div class="seperator" ng-show="mods.length > 0">
             </div>
+
             <div class="modit" ng-click="modIt()">
                 MOD THIS SITE
             </div>
         </div>
     </div>
+
 </body>
 </html>

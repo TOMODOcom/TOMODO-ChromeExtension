@@ -32,6 +32,7 @@ function tomodoControl($scope){
     $scope.mods = [];
     $scope.baseUrl = "http://betterinternethome.com:8000";
     updateMods = function(mods){
+        console.log('update mods');
         console.log(mods)
         $scope.$apply(function(){
             $scope.mods = mods.filter(function(mod){

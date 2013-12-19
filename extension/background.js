@@ -36,9 +36,14 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         }
     }
     else if(request.getMods){
+//        console.log('get mods');
+//        console.log('mods');
+//        console.log(JSON.parse( sessionStorage["tomodoMods_" + host]));
+
         // popup page has asked for the mods data.
         var tabId = request.getMods.forTabId;
         var host = sessionStorage["hostName_" + tabId];
+
         sendResponse({
             host: host,
             mods: JSON.parse( sessionStorage["tomodoMods_" + host])
@@ -60,6 +65,7 @@ function setBadge(tabId){
     }
     else{
         chrome.browserAction.setBadgeText({text: sessionStorage["numberOfMods_" + host], tabId: tabId});
+        chrome.browserAction.setBadgeBackgroundColor({color: "#e04242" , tabId: tabId })
     }
 }
 
