@@ -30,7 +30,7 @@ function navigateTo(url){
 function tomodoControl($scope){
     $scope.state = "mods";
     $scope.mods = [];
-    $scope.baseUrl = "http://betterinternethome.com:8000";
+
     updateMods = function(mods){
         console.log('update mods');
         console.log(mods)
@@ -68,7 +68,7 @@ function tomodoControl($scope){
 //        chrome.runtime.sendMessage({createMod: {forTabId: tab.id}}, function(response) {});
 
         mixpanel.track('mod_create', {domain: host});
-        var url = "http://betterinternethome.com:8000/dashboard/createNewMod/?target_domain=" + host;
+        var url = settings.API_URL + "/dashboard/createNewMod/?target_domain=" + host;
         openUrl(url);
 
     }

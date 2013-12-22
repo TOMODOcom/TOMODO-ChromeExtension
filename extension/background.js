@@ -43,10 +43,17 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         // popup page has asked for the mods data.
         var tabId = request.getMods.forTabId;
         var host = sessionStorage["hostName_" + tabId];
+        var mods;
 
+        try{
+            mods = JSON.parse( sessionStorage["tomodoMods_" + host]);
+        }
+        catch (error){
+            return;
+        }
         sendResponse({
             host: host,
-            mods: JSON.parse( sessionStorage["tomodoMods_" + host])
+            mods: mods
         });
     }
     else if (request.open && request.open.url){
@@ -77,10 +84,16 @@ function initPopupContent(tabId, host){
 
     if(!sessionStorage["numberOfMods_" + host] || !sessionStorage["tomodoMods_" + host]){
         var mods_request = new XMLHttpRequest;
-        mods_request.open('get', 'http://betterinternethome.com:8080/v1/getPublishedModsByDomain?targetDomain=' + host, false);
+        mods_request.open('get', settings.API_URL + '/v1/getPublishedModsByDomain?targetDomain=' + host, false);
         mods_request.send();
         var mods_data = mods_request.responseText;
-        mods_data = JSON.parse(mods_data);
+        try{
+            mods_data = JSON.parse(mods_data);
+        }
+        catch(error){
+            return;
+        }
+
         var count = mods_data.length;
         var badgeText = count > 0 ? count.toLocaleString() : "";
     }
