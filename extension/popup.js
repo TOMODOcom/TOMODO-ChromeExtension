@@ -40,6 +40,11 @@ function tomodoControl($scope){
             })
 //                .slice(0,2) //debug!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
             ;
+            mods.forEach(function(mod){
+                if(mod.modImageXSmall.indexOf('http') != 0){
+                    mod.modImageXSmall = "http:" + mod.modImageXSmall;
+                }
+            });
         });
     };
 

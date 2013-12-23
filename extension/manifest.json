@@ -1,10 +1,10 @@
 {
-    "version": "1.1.1.10",
-    "name": "[name]",
-    "short_name": "[short name]",
+    "version": "1.1.2.1",
+    "name": "TOMODO Explorer",
+    "short_name": "TOMODO Explorer",
     "manifest_version": 2,
-    "description": "[description]",
-    "author": "[author]",
+    "description": "Modify existing websites, view sites modified by other and publish your creations.",
+    "author": "tomodo.com",
     "background": {
         "persistent": false,
         "page": "background.html"
