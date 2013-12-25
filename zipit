@@ -1,0 +1,9 @@
+
+echo 'zipping chrome extension'
+zip -r ./extension.zip ./compiled_extension/
+
+echo 'zipping opera extension'
+cd ./compiled_extension/
+zip -r ./extension.crx ./*
+mv ./extension.crx ..
+

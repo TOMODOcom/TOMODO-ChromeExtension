@@ -4,21 +4,17 @@ a {
     outline: 0;
 }
 
-img{
-    outline: 0;
-
-}
-
 body{
     font-family:'Source Sans Pro', sans-serif;
-    margin: 0px !important;
+    margin: 0px;
     color: white;
 }
 
 #tomodo{
-    width: 275px;
-    max-height: 512px;
+   width: 275px;
+    max-height: 410px;
     overflow: hidden;
+//    min-height: 220px;
 }
 
 #topbar{
@@ -30,7 +26,6 @@ body{
 #icon{
     float: right;
     margin-left: 3px;
-    outline: 0;
 }
 
 #number-of-mods{
@@ -76,14 +71,15 @@ body{
 }
 
 .modit{
-    text-align: center;
-    width: 245px;
-    height: 31px;
-    background: #FC5353;
-    border: none;
-    padding-top: 11px;
-    font-weight: bold;
-    cursor: pointer;
+   text-align: center;
+width: 245px;
+height: 31px;
+background: #FC5353;
+border: none;
+padding-top: 11px;
+font-weight: bold;
+cursor: pointer;
+
 }
 
 .modsElement{
@@ -162,12 +158,7 @@ body{
 ::-webkit-scrollbar-track {
     background: white;
 }
-::-webkit-scrollbar-track-piece {
-    background: #E9E9E9;
-    border-radius: 10px;
-    margin-top: -15px;
-    margin-bottom: -15px;
-}
+
 ::-webkit-scrollbar-thumb {
     background: #C9C9C9;
     border-radius: 10px;
@@ -175,5 +166,11 @@ body{
 ::-webkit-scrollbar-corner {
 }
 
+::-webkit-scrollbar-track-piece {
+    margin-top: -15px;
+    margin-bottom: -15px;
+}
+
 ::-webkit-resizer {
 }
+

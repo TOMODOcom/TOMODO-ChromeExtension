@@ -26,7 +26,6 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         initPopupContent(tabId, host)
         setBadge(tabId);
 
-
         // if we haven't suggested at all or haven't suggested in the last INTERVAL_TO_SUGGEST
         if(!localStorage['tomodoLastSuggest'] || (new Date - new Date(localStorage['tomodoLastSuggest'])) > INTERVAL_TO_SUGGEST){
             localStorage['tomodoLastSuggest'] = new Date;
@@ -48,7 +47,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             mods = JSON.parse( sessionStorage["tomodoMods_" + host]);
         }
         catch (error){
-            return;
+            mods = [];
         }
         sendResponse({
             host: host,
@@ -94,6 +93,7 @@ function initPopupContent(tabId, host){
     }
     host = host.join('.')
 
+    sessionStorage["hostName_" + tabId] = host;
 
     if(!sessionStorage["numberOfMods_" + host] || !sessionStorage["tomodoMods_" + host]){
         var mods_request = new XMLHttpRequest;
@@ -117,8 +117,6 @@ function initPopupContent(tabId, host){
             return;
         }
     }
-
-    sessionStorage["hostName_" + tabId] = host;
 
     if(!sessionStorage["numberOfMods_" + host])
         sessionStorage["numberOfMods_" + host] = badgeText;

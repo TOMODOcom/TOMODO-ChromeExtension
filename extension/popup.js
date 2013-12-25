@@ -7,11 +7,35 @@ mixpanel.init("aecabcf1633d428bab0dffd6134ef09a");
 mixpanel.track('browserActionButton_click');
 
 //______________________________________________________________________________________________________________________
+ function macCssHack(){
+    if(navigator.userAgent.indexOf('Mac') >= 0) {
+        console.log('maac');
+//        $('#mods::-webkit-scrollbar-track-piece').css({
+//            "margin-top": "0px",
+//            "margin-bottom": "0px"
+//        });
+        $('body').append(
+
+                         '<style>' +
+                              '::-webkit-scrollbar-track-piece{' +
+                                                                     'margin-top: 0px;'+
+                                                                     'margin-bottom: 0px;'+
+                              '}' +
+                         '</style>'
+                         
+        )
+        
+    }
+
+}
+ 
+//______________________________________________________________________________________________________________________
 
 var host;
 var updateMods;
 
 $(document).ready(function(){
+    macCssHack();
     chrome.tabs.query({active: true, currentWindow: true} ,function(tabs){
         var tab = tabs[0];
         chrome.runtime.sendMessage({getMods: {forTabId: tab.id}}, function(response){
@@ -48,7 +72,8 @@ function tomodoControl($scope){
 
     $scope.modIt = function(){
         mixpanel.track('mod_create', {domain: host});
-        var url = settings.HOME_URL + "/dashboard/createNewMod/?target_domain=" + host;
+//        var url = settings.HOME_URL + "/dashboard/createNewMod/?" + encodeURIComponent("target_domain=" + host);
+        var url = settings.HOME_URL + "/dashboard/createNewMod/?" + "target_domain=" + host;
         openUrl(url);
     }
 }
