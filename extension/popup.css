@@ -1,6 +1,12 @@
 a {
     text-decoration: none;
     color: rgba(255, 255, 255, 0);
+    outline: 0;
+}
+
+img{
+    outline: 0;
+
 }
 
 body{
@@ -24,6 +30,7 @@ body{
 #icon{
     float: right;
     margin-left: 3px;
+    outline: 0;
 }
 
 #number-of-mods{

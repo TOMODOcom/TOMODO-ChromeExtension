@@ -1,12 +1,11 @@
 {
-    "version": "1.1.2.1",
+    "version": "1.1.3.1",
     "name": "TOMODO Explorer",
     "short_name": "TOMODO Explorer",
     "manifest_version": 2,
-    "description": "Modify existing websites, view sites modified by other and publish your creations.",
+    "description": "Modify existing websites, view sites modified by others and publish your creations.",
     "author": "tomodo.com",
     "background": {
-        "persistent": false,
         "page": "background.html"
 	},
     "icons": {
@@ -17,7 +16,7 @@
             "19": "images/faviconTOMODO19.png",
             "38": "images/faviconTOMODO38.png"
         },
-        "default_title": "click for list of mods",
+        "default_title": "click to view Mods",
         "default_popup": "popup.html"
     },
     "permissions": [

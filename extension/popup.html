@@ -17,8 +17,9 @@
 </head>
 <body ng-controller="tomodoControl">
     <div id="tomodo">
+
         <div id="topbar">
-            <div id="number-of-mods" ng-show="mods.length > 0">
+            <div id="number-of-mods" ng-show="mods && mods.length > 0">
                 {{mods.length}} MODS
             </div>
             <a href="http://tomodo.com" target="_blank">
@@ -28,7 +29,7 @@
             </a>
         </div>
         <div id="main">
-            <div id="no-mods" ng-show="mods.length == 0">
+            <div id="no-mods" ng-show="mods && mods.length == 0">
                 <div class="title">
                     - NO MODS FOR THIS SITE -
                 </div>
@@ -36,7 +37,7 @@
                     Be the first one to<br> modify this website
                 </div>
             </div>
-            <div id="mods" ng-show="mods.length > 0">
+            <div id="mods" ng-show="mods && mods.length > 0">
                 <div class="modGalleryElement modsElement" ng-repeat="mod in mods"  ng-click="openModSite(mod)">
                         <div class="imgContainer">
                             <div class="imgCover"></div>
@@ -53,7 +54,7 @@
                 </div>
             </div>
 
-            <div class="seperator" ng-show="mods.length > 0">
+            <div class="seperator" ng-show="mods && mods.length > 0">
             </div>
 
             <div class="modit" ng-click="modIt()">

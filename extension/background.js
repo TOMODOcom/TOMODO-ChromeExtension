@@ -17,6 +17,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
     var INTERVAL_TO_SUGGEST = 0*day + 2*minute;
 
     if(request.init){
+        console.log('background:init');
 
         // a init request has been sent from content script on page load
         var host = request.url;
@@ -36,9 +37,7 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
         }
     }
     else if(request.getMods){
-//        console.log('get mods');
-//        console.log('mods');
-//        console.log(JSON.parse( sessionStorage["tomodoMods_" + host]));
+        console.log('background:getMods ------> start');
 
         // popup page has asked for the mods data.
         var tabId = request.getMods.forTabId;
@@ -55,17 +54,26 @@ chrome.runtime.onMessage.addListener(function(request, sender, sendResponse){
             host: host,
             mods: mods
         });
+
+        console.log('host: ', host);
+        console.log('mods: ', mods);
+
+        console.log('background:getMods ------> end');
     }
     else if (request.open && request.open.url){
+        console.log('background:open.url');
         chrome.tabs.create({url: request.open.url});
     }
     else if (request.goto && request.goto.url){
+        console.log('background:goto.url');
+        console.log('background:goto.url');
         chrome.tabs.update(tabId, {url: request.goto.url});
     }
 
 });
 
 function setBadge(tabId){
+    console.log('setBadge');
     var host = sessionStorage["hostName_"+tabId];
     if(!host){
 
@@ -78,9 +86,14 @@ function setBadge(tabId){
 
 function initPopupContent(tabId, host){
 
+    console.log('iniPopupContent');
+
     host = host.split('.');
-    host = host.slice(-2);
-    host = host.join('.');
+    if( ["mail", "www"].indexOf(host[0]) >= 0 && host.length > 2){
+        host = host.splice(1)
+    }
+    host = host.join('.')
+
 
     if(!sessionStorage["numberOfMods_" + host] || !sessionStorage["tomodoMods_" + host]){
         var mods_request = new XMLHttpRequest;
@@ -88,16 +101,22 @@ function initPopupContent(tabId, host){
         mods_request.send();
         var mods_data = mods_request.responseText;
         try{
-            mods_data = JSON.parse(mods_data);
+            var mods = JSON.parse(mods_data);
+            mods = mods.filter(function(mod){
+                return mod.modImageXSmall.indexOf("defModImg") == -1;
+            });
+            mods.forEach(function(mod){
+                if(mod.modImageXSmall.indexOf('http') != 0){
+                    mod.modImageXSmall = "http:" + mod.modImageXSmall;
+                }
+            });
+            var count = mods.length;
+            var badgeText = count > 0 ? count.toLocaleString() : "";
         }
         catch(error){
             return;
         }
-
-        var count = mods_data.length;
-        var badgeText = count > 0 ? count.toLocaleString() : "";
     }
-
 
     sessionStorage["hostName_" + tabId] = host;
 
@@ -105,17 +124,13 @@ function initPopupContent(tabId, host){
         sessionStorage["numberOfMods_" + host] = badgeText;
 
     if(!sessionStorage["tomodoMods_" + host])
-        sessionStorage["tomodoMods_" + host] = JSON.stringify(mods_data);
+        sessionStorage["tomodoMods_" + host] = JSON.stringify(mods);
 }
 
 chrome.runtime.onInstalled.addListener(function(details){
     mixpanel.track('installed');
 });
 
-
-chrome.management.onUninstalled.addListener(function(){
-    mixpanel.track("uninstall");
-});
 
 
 
